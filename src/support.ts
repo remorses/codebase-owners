@@ -24,7 +24,7 @@ export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
     return results
 }
 
-export function arrayMax(arr: T[], getter: (x: T) => number) {
+export function arrayMax<T>(arr: T[], getter: (x: T) => number) {
     return arr.reduce(function (p, v) {
         return getter(p) > getter(v) ? p : v
     })
@@ -65,3 +65,5 @@ export function bfs(tree: Tree) {
     }
     return results
 }
+
+export let average = (array) => array.reduce((a, b) => a + b, 0) / array.length
