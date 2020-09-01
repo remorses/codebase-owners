@@ -162,10 +162,11 @@ export function makeTree(path, options: TreeOptions = {}): string {
 }
 
 export function makeTreeWithInfo(cwd) {
+    // TODO first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
     return makeTree(cwd, {
         exclude: [/node_modules/, /\.git/], // TODO more default excludes from gitignore
         addToLine: ({ filePath, isDir }) => {
-            // TODO isDir is based on children percentages
+            // TODO isDir percentage is based on children percentages
             if (isDir) {
                 return ''
             }
