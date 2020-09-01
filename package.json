@@ -35,6 +35,7 @@
         "typescript": "^3.9.5"
     },
     "dependencies": {
+        "promisify-child-process": "^4.1.1",
         "tslib": "^2.0.0",
         "yargs": "^15.4.1"
     }
