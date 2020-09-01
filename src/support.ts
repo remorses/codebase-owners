@@ -21,3 +21,22 @@ export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
     }
     return results
 }
+
+
+export function arrayMax<T>(arr: T[], getter: (x: T) => number) {
+    return arr.reduce(function (p, v) {
+        return getter(p) > getter(v) ? p : v
+    })
+}
+
+export function makeHist(data: string[]) {
+    const hist = {}
+    data.forEach((x) => {
+        if (hist[x]) {
+            hist[x]++
+        } else {
+            hist[x] = 1
+        }
+    })
+    return hist
+}

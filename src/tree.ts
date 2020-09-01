@@ -2,7 +2,7 @@ import fs from 'fs'
 import chalk from 'chalk'
 import nodePath from 'path'
 import { boolean, number } from 'yargs'
-import { getFileOwners } from './support'
+import { getFileOwners, makeHist, arrayMax } from './support'
 
 export type TreeOptions = {
     allFiles?: boolean
@@ -188,22 +188,4 @@ export function makeTreeWithInfo(cwd) {
             )}`
         },
     })
-}
-
-function arrayMax<T>(arr: T[], getter: (x: T) => number) {
-    return arr.reduce(function (p, v) {
-        return getter(p) > getter(v) ? p : v
-    })
-}
-
-function makeHist(data: string[]) {
-    const hist = {}
-    data.forEach((x) => {
-        if (hist[x]) {
-            hist[x]++
-        } else {
-            hist[x] = 1
-        }
-    })
-    return hist
 }
