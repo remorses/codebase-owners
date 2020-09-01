@@ -1,4 +1,5 @@
 import fs from 'fs'
+import chalk from 'chalk'
 import nodePath from 'path'
 import { boolean, number } from 'yargs'
 import { getFileOwners } from './support'
@@ -162,8 +163,9 @@ export function makeTree(path, options: TreeOptions = {}): string {
 
 export function makeTreeWithInfo(cwd) {
     return makeTree(cwd, {
-        exclude: [/node_modules/], // TODO more default excludes from gitignore
+        exclude: [/node_modules/, /\.git/], // TODO more default excludes from gitignore
         addToLine: ({ filePath, isDir }) => {
+            // TODO isDir is based on children percentages
             if (isDir) {
                 return ''
             }
@@ -179,10 +181,11 @@ export function makeTreeWithInfo(cwd) {
                 contributorsDetails,
                 (x) => x.percentage,
             )
-            const percentage = (topContributorDetails.percentage * 100).toFixed(
-                0,
-            )
-            return ` ${percentage}% ${topContributorDetails.author}`
+            const percentage =
+                (topContributorDetails.percentage * 100).toFixed(0) + '%'
+            return ` ${chalk.cyan(percentage)} ${chalk.green(
+                topContributorDetails.author,
+            )}`
         },
     })
 }
