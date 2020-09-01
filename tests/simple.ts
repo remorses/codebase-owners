@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { makeTreeWithInfo } from '../src/tree'
+import { makeTreeWithInfo, printTree } from '../src/tree'
 import { getFileOwners } from '../src/support'
 
 // it('tree', () => {
@@ -20,4 +20,7 @@ it('getFileOwners', async () => {
 })
 it('makeTreeWithInfo', async () => {
     console.log(JSON.stringify(await makeTreeWithInfo('.'), null, 4))
+})
+it('makeTreeWithInfo and printTree', async () => {
+    console.log(printTree(await makeTreeWithInfo('.')))
 })
