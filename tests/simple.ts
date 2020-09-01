@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { makeTree } from '../src/tree'
+import { makeTree, makeTreeWithInfo } from '../src/tree'
 import { getFileOwners } from '../src/support'
 
 it('tree', () => {
@@ -17,4 +17,7 @@ it('tree with options.addToLine', () => {
 })
 it('getFileOwners', async () => {
     console.log(await getFileOwners({ filePath: './package.json' }))
+})
+it('makeTreeWithInfo', async () => {
+    console.log(await makeTreeWithInfo('.'))
 })

@@ -1,10 +1,11 @@
 import fs from 'fs'
 import nodePath from 'path'
-import { boolean } from 'yargs'
+import { boolean, number } from 'yargs'
+import { getFileOwners } from './support'
 
 export type TreeOptions = {
     allFiles?: boolean
-    addToLine?: (x?: { filename; filePath }) => string
+    addToLine?: (x?: { filename; filePath; isDir }) => string
     dirsFirst?: boolean
     dirsOnly?: boolean
     exclude?: RegExp[] // | ((x?: string) => boolean)
@@ -87,7 +88,7 @@ function print(
     }
 
     if (options.addToLine) {
-        line.push(options.addToLine({ filename, filePath: path }))
+        line.push(options.addToLine({ filename, filePath: path, isDir }))
     }
 
     lines.push(line.join(''))
@@ -157,4 +158,49 @@ export function makeTree(path, options: TreeOptions = {}): string {
         '',
         combinedOptions,
     ).join('\n')
+}
+
+export function makeTreeWithInfo(cwd) {
+    return makeTree(cwd, {
+        exclude: [/node_modules/], // TODO more default excludes from gitignore
+        addToLine: ({ filePath, isDir }) => {
+            if (isDir) {
+                return ''
+            }
+            const authors = getFileOwners({
+                filePath,
+            })
+            const hist = makeHist(authors)
+            const contributorsDetails = Object.keys(hist).map((author) => {
+                const lines = hist[author]
+                return { percentage: lines / authors.length, author }
+            })
+            const topContributorDetails = arrayMax(
+                contributorsDetails,
+                (x) => x.percentage,
+            )
+            const percentage = (topContributorDetails.percentage * 100).toFixed(
+                0,
+            )
+            return ` ${percentage}% ${topContributorDetails.author}`
+        },
+    })
+}
+
+function arrayMax<T>(arr: T[], getter: (x: T) => number) {
+    return arr.reduce(function (p, v) {
+        return getter(p) > getter(v) ? p : v
+    })
+}
+
+function makeHist(data: string[]) {
+    const hist = {}
+    data.forEach((x) => {
+        if (hist[x]) {
+            hist[x]++
+        } else {
+            hist[x] = 1
+        }
+    })
+    return hist
 }
