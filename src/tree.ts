@@ -44,6 +44,13 @@ export function makeTreeWithInfo(cwd) {
         const authors = getFileOwners({
             filePath,
         })
+        if (!authors?.length) {
+            node.topContributorDetails = {
+                percentage: 0,
+                author: '',
+            }
+            return
+        }
         const hist = makeHist(authors)
         const contributorsDetails = Object.keys(hist).map((author) => {
             const lines = hist[author]
@@ -106,8 +113,9 @@ function print(
 
     // ADD THE CONTRIBUTOR INFO
     // TODO align to the right
-    const percentage =
+    const percentage = node.topContributorDetails.percentage ?
         (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
+        : ''
     line.push(
         ` ${chalk.cyan(percentage)} ${chalk.green(
             node.topContributorDetails.author,

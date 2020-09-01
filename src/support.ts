@@ -8,20 +8,24 @@ import dirTree from 'directory-tree'
 const DEFAULT_AUTHOR_REGEX = /\nauthor-mail <(.*)>/g
 
 export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
-    let stdout = execSync(`git blame -w --line-porcelain ${filePath}`)
-    const data = stdout.toString()
+    try {
+        let stdout = execSync(`git blame -w --line-porcelain ${filePath}`)
+        const data = stdout.toString()
 
-    let match
-    let results = []
-    while ((match = regex.exec(data.toString())) !== null) {
-        const authorEmail = match[1] || ''
-        if (authorEmail && authorEmail !== 'not.committed.yet') {
-            results.push(authorEmail)
+        let match
+        let results = []
+        while ((match = regex.exec(data.toString())) !== null) {
+            const authorEmail = match[1] || ''
+            if (authorEmail && authorEmail !== 'not.committed.yet') {
+                results.push(authorEmail)
+            }
+            // expected output: "Found foo. Next starts at 9."
+            // expected output: "Found foo. Next starts at 19."
         }
-        // expected output: "Found foo. Next starts at 9."
-        // expected output: "Found foo. Next starts at 19."
+        return results
+    } catch {
+        return []
     }
-    return results
 }
 
 export function arrayMax<T>(arr: T[], getter: (x: T) => number) {
