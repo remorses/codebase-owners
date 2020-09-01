@@ -104,6 +104,16 @@ function print(
         line.push('/')
     }
 
+    // ADD THE CONTRIBUTOR INFO
+    // TODO align to the right
+    const percentage =
+        (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
+    line.push(
+        ` ${chalk.cyan(percentage)} ${chalk.green(
+            node.topContributorDetails.author,
+        )}`,
+    )
+
     lines.push(line.join(''))
 
     if (isFile) {
@@ -190,8 +200,3 @@ export function printTree(
     const combinedOptions = Object.assign({}, DEFAULT_OPTIONS, options)
     return print(node, 0, '', combinedOptions).join('\n')
 }
-// const percentage =
-//             (topContributorDetails.percentage * 100).toFixed(0) + '%'
-// return ` ${chalk.cyan(percentage)} ${chalk.green(
-//     topContributorDetails.author,
-// )}`
