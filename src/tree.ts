@@ -4,6 +4,7 @@ import { boolean } from 'yargs'
 
 export type TreeOptions = {
     allFiles?: boolean
+    addToLine?: (x?: { filename; filePath }) => string
     dirsFirst?: boolean
     dirsOnly?: boolean
     exclude?: RegExp[] // | ((x?: string) => boolean)
@@ -84,6 +85,11 @@ function print(
     if (isDir && options.trailingSlash) {
         line.push('/')
     }
+
+    if (options.addToLine) {
+        line.push(options.addToLine({ filename, filePath: path }))
+    }
+
     lines.push(line.join(''))
 
     if (isFile) {
