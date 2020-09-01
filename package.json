@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "chalk": "^4.1.0",
+        "directory-tree": "^2.2.4",
         "promisify-child-process": "^4.1.1",
         "tslib": "^2.0.0",
         "yargs": "^15.4.1"

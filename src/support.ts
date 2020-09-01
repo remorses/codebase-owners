@@ -1,6 +1,8 @@
 const util = require('util')
 import { exec } from 'promisify-child-process'
 import { execSync } from 'child_process'
+import dirTree from 'directory-tree'
+
 // export const exec = util.promisify(exec_)
 
 const DEFAULT_AUTHOR_REGEX = /\nauthor-mail <(.*)>/g
@@ -22,7 +24,7 @@ export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
     return results
 }
 
-export function arrayMax<T>(arr: T[], getter: (x: T) => number) {
+export function arrayMax(arr: T[], getter: (x: T) => number) {
     return arr.reduce(function (p, v) {
         return getter(p) > getter(v) ? p : v
     })
@@ -40,19 +42,18 @@ export function makeHist(data: string[]) {
     return hist
 }
 
-export type Tree<T> = {
-    value: T
-    children: Tree<T>[]
+export type Tree = {
+    children?: Tree[]
 }
 
-export function bfs<T>(tree: Tree<T>) {
+export function bfs(tree: Tree) {
     const results = []
     var queue = [tree]
-    var n: Tree<T>
+    var n: Tree
 
     while (queue.length > 0) {
         n = queue.shift()
-        results.push(n.value)
+        results.push(n)
 
         if (!n.children) {
             continue
