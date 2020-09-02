@@ -78,7 +78,7 @@ export function bfs(tree: Tree) {
 }
 
 export let average = (array) => {
-    return array.reduce((a, b) => a + b, 0) / array.length
+    return array.reduce(sum, 0) / array.length
 }
 
 export let weightedAverage = (array, weights) => {
@@ -123,4 +123,8 @@ export function numInRange(x, range: [number, number], includeMax = true) {
         min = range[0],
         d = max - min
     return x === max && includeMax ? x : ((x - min) % d) + min
+}
+
+export function sum(a, b) {
+    return a + b
 }

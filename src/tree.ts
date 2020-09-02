@@ -1,7 +1,7 @@
 import fs from 'fs'
 import chalk from 'chalk'
 import nodePath from 'path'
-import { boolean, number } from 'yargs'
+import { boolean, number, array } from 'yargs'
 import directoryTree, { DirectoryTree } from 'directory-tree'
 import findUp from 'find-up'
 import globToRegex from 'glob-to-regexp'
@@ -14,6 +14,7 @@ import {
     bfs,
     average,
     weightedAverage,
+    sum,
 } from './support'
 
 export type MyDirectoryTree = {
@@ -62,34 +63,39 @@ export async function makeTreeWithInfo(cwd) {
                 const isDir = node.type === 'directory'
                 const filePath = node.path
                 if (isDir && node?.children?.length) {
-                    const author = arrayMax(
+                    const groups = groupBy(
                         node.children || [],
-                        (x) => x.topContributorDetails.percentage,
-                    ).topContributorDetails.author
-                    const linesWritten = node.children
-                        .filter(
-                            (x) => x.topContributorDetails.author === author,
-                        )
+                        (x) => x.topContributorDetails.author,
+                    )
+                    const totalLines = node.children
                         .map(
                             (x) =>
                                 x.topContributorDetails.accumulatedLinesCount,
                         )
-                    const percentage = weightedAverage(
-                        node.children
-                            .filter(
+                        .reduce(sum, 0)
+                    const details = Object.keys(groups).map((author) => {
+                        const nodes = groups[author]
+                        const lines = nodes
+                            .map(
                                 (x) =>
-                                    x.topContributorDetails.author === author,
+                                    x.topContributorDetails
+                                        .accumulatedLinesCount,
                             )
-                            .map((x) => x.topContributorDetails.percentage),
-                        linesWritten,
+                            .reduce(sum, 0)
+                        return {
+                            author,
+                            lines,
+                            percentage: lines / totalLines,
+                        }
+                    })
+                    const { author, percentage, lines } = arrayMax(
+                        details,
+                        (x) => x.percentage,
                     )
                     node.topContributorDetails = {
                         author,
                         percentage,
-                        accumulatedLinesCount: linesWritten.reduce(
-                            (a, b) => a + b,
-                            0,
-                        ),
+                        accumulatedLinesCount: lines,
                     }
                     return
                 }
