@@ -44,19 +44,24 @@ function getTreeLayersLeafFirst(tree: MyDirectoryTree) {
 }
 
 // first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
-export async function makeTreeWithInfo(cwd) {
+export async function makeTreeWithInfo(
+    cwd,
+    { silent = false } = {},
+): Promise<MyDirectoryTree> {
     const gitignoreExclude = await getGitIgnoreRegexes()
     const tree = directoryTree(cwd, {
         exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO default excludes from gitignore not working
     })
     const layers = getTreeLayersLeafFirst(tree)
-    console.log(
-        `processing ${
-            layers.length
-        } file tree layers concurrently, with in average ${average(
-            layers.map((x) => x.length),
-        )} files each`,
-    )
+    if (!silent) {
+        console.log(
+            `processing ${
+                layers.length
+            } file tree layers concurrently, with in average ${average(
+                layers.map((x) => x.length),
+            )} files each`,
+        )
+    }
     for (let nodes of layers) {
         await Promise.all(
             nodes.map(async (node) => {
@@ -83,7 +88,7 @@ export async function makeTreeWithInfo(cwd) {
                             )
                             .reduce(sum, 0)
                         const percentage = lines / totalLines
-                        if (percentage > 1) {
+                        if (!silent && percentage > 1) {
                             console.error('WARNING: got a percentage > 1')
                         }
                         return {

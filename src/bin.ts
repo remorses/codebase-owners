@@ -6,12 +6,17 @@ const argv = yargs
     .option('cwd', { type: 'string', default: process.cwd() })
     .option('cwd', { type: 'string', default: process.cwd() })
     .option('maxDepth', { type: 'number', default: 4, alias: 'd' })
+    .option('onlyOwner', { type: 'boolean' })
     .option('verbose', { alias: 'v', type: 'boolean' })
     .help('help').argv
 
 async function main() {
+    const tree = await makeTreeWithInfo(argv.cwd, { silent: true })
+    if (argv.onlyOwner) {
+        return console.log(tree.topContributorDetails.author)
+    }
     console.log(
-        printTree(await makeTreeWithInfo(argv.cwd), {
+        printTree(tree, {
             maxDepth: argv.maxDepth,
         }),
     )
