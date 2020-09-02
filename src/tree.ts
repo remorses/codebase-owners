@@ -82,10 +82,14 @@ export async function makeTreeWithInfo(cwd) {
                                         .accumulatedLinesCount,
                             )
                             .reduce(sum, 0)
+                        const percentage = lines / totalLines
+                        if (percentage > 1) {
+                            console.error('got a percentage > 1')
+                        }
                         return {
                             author,
                             lines,
-                            percentage: lines / totalLines,
+                            percentage,
                         }
                     })
                     const { author, percentage, lines } = arrayMax(
