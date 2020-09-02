@@ -6,7 +6,14 @@ import directoryTree, { DirectoryTree } from 'directory-tree'
 import findUp from 'find-up'
 import globToRegex from 'glob-to-regexp'
 import gitignoreToGlobs from 'gitignore-to-glob'
-import { getFileOwners, makeHist, arrayMax, bfs, average } from './support'
+import {
+    getFileOwners,
+    makeHist,
+    arrayMax,
+    bfs,
+    average,
+    weightedAverage,
+} from './support'
 
 export type MyDirectoryTree = {
     path: string
@@ -15,7 +22,11 @@ export type MyDirectoryTree = {
     type: 'directory' | 'file'
     children?: MyDirectoryTree[]
     extension?: string
-    topContributorDetails?: { percentage; author }
+    topContributorDetails?: {
+        percentage: number
+        author: string
+        accumulatedLinesCount: number
+    }
 }
 
 export async function makeTreeWithInfo(cwd) {
@@ -34,14 +45,19 @@ export async function makeTreeWithInfo(cwd) {
                 node.children || [],
                 (x) => x.topContributorDetails.percentage,
             ).topContributorDetails.author
-            const percentage = average(
+            const linesWritten = node.children
+                .filter((x) => x.topContributorDetails.author === author)
+                .map((x) => x.topContributorDetails.accumulatedLinesCount)
+            const percentage = weightedAverage(
                 node.children
                     .filter((x) => x.topContributorDetails.author === author)
                     .map((x) => x.topContributorDetails.percentage),
+                linesWritten,
             )
             node.topContributorDetails = {
                 author,
                 percentage,
+                accumulatedLinesCount: linesWritten.reduce((a, b) => a + b, 0),
             }
             return
         }
@@ -52,13 +68,18 @@ export async function makeTreeWithInfo(cwd) {
             node.topContributorDetails = {
                 percentage: 0,
                 author: '',
+                accumulatedLinesCount: 0,
             }
             return
         }
         const hist = makeHist(authors)
         const contributorsDetails = Object.keys(hist).map((author) => {
             const lines = hist[author]
-            return { percentage: lines / authors.length, author }
+            return {
+                percentage: lines / authors.length,
+                author,
+                accumulatedLinesCount: lines,
+            }
         })
 
         node.topContributorDetails = arrayMax(
