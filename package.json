@@ -1,5 +1,5 @@
 {
-    "name": "nodejs-lib-template",
+    "name": "code-owners",
     "_": "[bump]",
     "version": "0.0.2",
     "description": "",
@@ -16,6 +16,7 @@
         "src",
         "esm"
     ],
+    "bin": "dist/bin.js",
     "scripts": {
         "test": "NODE_ENV=test mocha --colors --exit",
         "compile": "sucrase -q ./src -d ./dist --transforms typescript,imports",
