@@ -5,6 +5,7 @@ import { boolean, number } from 'yargs'
 import directoryTree, { DirectoryTree } from 'directory-tree'
 import findUp from 'find-up'
 import globToRegex from 'glob-to-regexp'
+import { groupBy } from 'lodash'
 import gitignoreToGlobs from 'gitignore-to-glob'
 import {
     getFileOwners,

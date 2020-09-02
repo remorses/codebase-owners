@@ -50,11 +50,13 @@ export function makeHist(data: string[]) {
 }
 
 export type Tree = {
+    depth?: number
     children?: Tree[]
 }
 
 export function bfs(tree: Tree) {
     const results = []
+    tree.depth = 0
     var queue = [tree]
     var n: Tree
 
@@ -65,9 +67,10 @@ export function bfs(tree: Tree) {
         if (!n.children) {
             continue
         }
-
         for (var i = 0; i < n.children.length; i++) {
-            queue.push(n.children[i])
+            const child = n.children[i]
+            child.depth = (n.depth || 0) + 1
+            queue.push(child)
         }
     }
     return results

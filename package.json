@@ -26,6 +26,7 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
+        "@types/lodash": "^4.14.161",
         "@types/mocha": "^7.0.2",
         "@types/node": "^14.0.11",
         "@types/yargs": "^15.0.5",
@@ -41,6 +42,7 @@
         "find-up": "^5.0.0",
         "gitignore-to-glob": "^0.3.0",
         "glob-to-regexp": "^0.4.1",
+        "lodash": "^4.17.20",
         "promisify-child-process": "^4.1.1",
         "tslib": "^2.0.0",
         "yargs": "^15.4.1"

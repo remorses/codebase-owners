@@ -10,7 +10,7 @@ import {
 
 import directoryTree from 'directory-tree'
 
-it('directoryTree exclude works', () => {
+it('directoryTree and bfs', () => {
     const tree = directoryTree('.', { exclude: [/^tests$/, /node_modules/] })
     const nodes = bfs(tree)
     assert(
@@ -19,7 +19,8 @@ it('directoryTree exclude works', () => {
             return x.name === 'tests'
         }),
     )
-    console.log()
+    console.log(JSON.stringify(tree, null, 4))
+    // console.log(nodes)
 })
 // it('tree with options.addToLine', () => {
 //     console.log(
@@ -35,6 +36,7 @@ it('directoryTree exclude works', () => {
 it('getGitIgnoreRegexes', async () => {
     console.log(await getGitIgnoreRegexes())
 })
+
 it('weightedAverage', async () => {
     const x = [2, 0]
     const w = [5, 5]
