@@ -136,7 +136,6 @@ function print(
 
 export type TreeOptions = {
     allFiles?: boolean
-    addToLine?: (x?: { filename; filePath; isDir }) => string
     dirsFirst?: boolean
     dirsOnly?: boolean
     exclude?: RegExp[] // | ((x?: string) => boolean)
