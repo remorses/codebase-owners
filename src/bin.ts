@@ -4,14 +4,15 @@ import { printTree, makeTreeWithInfo } from './'
 
 const argv = yargs
     .option('cwd', { type: 'string', default: process.cwd() })
-    .option('alignRight', { type: 'boolean' })
+    .option('cwd', { type: 'string', default: process.cwd() })
+    .option('maxDepth', { type: 'number', default: 4 })
     .option('verbose', { alias: 'v', type: 'boolean' })
     .help('help').argv
 
 async function main() {
     console.log(
         printTree(await makeTreeWithInfo(argv.cwd), {
-            alignRight: argv.alignRight,
+            maxDepth: argv.maxDepth,
         }),
     )
 }

@@ -49,10 +49,12 @@ function print(
     }
 
     // ADD THE CONTRIBUTOR INFO
-    // TODO percentage always have 3 digits
-    const percentage = node.topContributorDetails.percentage
-        ? (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
-        : ''
+    if (!node.topContributorDetails.percentage) {
+        return lines
+    }
+
+    const percentage =
+        (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
     const postfix = ` ${chalk.cyan(('   ' + percentage).slice(-4))} ${
         node.topContributorDetails.author
     }`
@@ -129,6 +131,7 @@ export type TreeOptions = {
 }
 
 const DEFAULT_OPTIONS: TreeOptions = {
+    alignRight: true,
     allFiles: false,
     dirsFirst: false,
     dirsOnly: false,
