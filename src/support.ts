@@ -89,3 +89,10 @@ export let weightedAverage = (array, weights) => {
         normalizedWeights.reduce((a, b) => a + b, 0)
     )
 }
+
+export function alignRight(str: string, toAdd: string, length = 90) {
+    // TODO align right the beginning of toAdd
+    let paddingLength = length - str.length - toAdd.length
+    paddingLength = paddingLength < 0 ? 0 : paddingLength
+    return Array(paddingLength).fill(' ').join('') + toAdd
+}

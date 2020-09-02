@@ -1,5 +1,6 @@
 import { MyDirectoryTree } from './tree'
 import chalk from 'chalk'
+import { alignRight } from './support'
 
 const SYMBOLS = {
     BRANCH: '├── ',
@@ -48,15 +49,13 @@ function print(
     }
 
     // ADD THE CONTRIBUTOR INFO
-    // TODO align to the right
     const percentage = node.topContributorDetails.percentage
         ? (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
         : ''
-    line.push(
-        ` ${chalk.cyan(percentage)} ${chalk.green(
-            node.topContributorDetails.author,
-        )}`,
-    )
+    const postfix = ` ${chalk.cyan(percentage)} ${chalk.green(
+        node.topContributorDetails.author,
+    )}`
+    line.push(options.alignRight ? alignRight(line.join(''), postfix) : postfix)
 
     lines.push(line.join(''))
 
@@ -125,6 +124,7 @@ export type TreeOptions = {
     maxDepth?: number
     reverse?: boolean
     trailingSlash?: boolean
+    alignRight?: boolean
 }
 
 const DEFAULT_OPTIONS: TreeOptions = {
