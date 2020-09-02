@@ -49,12 +49,13 @@ function print(
     }
 
     // ADD THE CONTRIBUTOR INFO
+    // TODO percentage always have 3 digits
     const percentage = node.topContributorDetails.percentage
         ? (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
         : ''
-    const postfix = ` ${chalk.cyan(percentage)} ${chalk.green(
-        node.topContributorDetails.author,
-    )}`
+    const postfix = ` ${chalk.cyan(('   ' + percentage).slice(-4))} ${
+        node.topContributorDetails.author
+    }`
     line.push(options.alignRight ? alignRight(line.join(''), postfix) : postfix)
 
     lines.push(line.join(''))

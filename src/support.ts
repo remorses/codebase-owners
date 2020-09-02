@@ -2,6 +2,7 @@ const util = require('util')
 import { exec } from 'promisify-child-process'
 import { execSync } from 'child_process'
 import dirTree from 'directory-tree'
+import chalk from 'chalk'
 
 // export const exec = util.promisify(exec_)
 
@@ -90,9 +91,23 @@ export let weightedAverage = (array, weights) => {
     )
 }
 
-export function alignRight(str: string, toAdd: string, length = 90) {
-    // TODO align right the beginning of toAdd
-    let paddingLength = length - str.length - toAdd.length
+export function alignRight(
+    str: string,
+    toAdd: string,
+    length = 100,
+    maxSpace = 48,
+) {
+    if (toAdd.length > maxSpace) {
+        toAdd = toAdd.slice(0, maxSpace - 3) + '...'
+    } else {
+        toAdd =
+            toAdd +
+            Array(maxSpace - toAdd.length)
+                .fill(' ')
+                .join('')
+    }
+
+    let paddingLength = length - str.length - maxSpace
     paddingLength = paddingLength < 0 ? 0 : paddingLength
     return Array(paddingLength).fill(' ').join('') + toAdd
 }
