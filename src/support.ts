@@ -8,11 +8,12 @@ import chalk from 'chalk'
 
 const DEFAULT_AUTHOR_REGEX = /\nauthor-mail <(.*)>/g
 
-export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
+export async function getFileOwners({
+    filePath,
+    regex = DEFAULT_AUTHOR_REGEX,
+}) {
     try {
-        let stdout = execSync(`git blame -w --line-porcelain ${filePath}`, {
-            stdio: 'pipe',
-        })
+        let { stdout } = await exec(`git blame -w --line-porcelain ${filePath}`)
         const data = stdout.toString()
 
         let match
