@@ -4,7 +4,6 @@ import { printTree, makeTreeWithInfo } from './'
 
 const argv = yargs
     .option('cwd', { type: 'string', default: process.cwd() })
-    .option('cwd', { type: 'string', default: process.cwd() })
     .option('maxDepth', { type: 'number', default: 4, alias: 'd' })
     .option('printOnlyOwner', { type: 'boolean' })
     .option('verbose', { alias: 'v', type: 'boolean' })
