@@ -13,28 +13,22 @@ import directoryTree from 'directory-tree'
 it('directoryTree and bfs', () => {
     const tree = directoryTree('.', { exclude: [/^tests$/, /node_modules/] })
     const nodes = bfs(tree)
+    console.log(JSON.stringify(tree, null, 4))
     assert(
         !nodes.find((x) => {
             // console.log(x.name)
             return x.name === 'tests'
         }),
     )
-    console.log(JSON.stringify(tree, null, 4))
+    
     // console.log(nodes)
 })
-// it('tree with options.addToLine', () => {
-//     console.log(
-//         makeTree('.', {
-//             exclude: [/node_modules/],
-//             addToLine: ({ filePath }) => {
-//                 return ` repeated ${filePath}`
-//             },
-//         }),
-//     )
-// })
 
 it('getGitIgnoreRegexes', async () => {
-    console.log(await getGitIgnoreRegexes())
+    const res = await getGitIgnoreRegexes()
+    assert(res)
+    console.log(res)
+
 })
 
 it('weightedAverage', async () => {
