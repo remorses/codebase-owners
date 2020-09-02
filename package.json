@@ -1,7 +1,7 @@
 {
     "name": "code-owners",
     "_": "[bump]",
-    "version": "0.0.9",
+    "version": "1.0.0",
     "description": "Get the owners of a file tree using git blame under the hood",
     "main": "dist/index.js",
     "module": "esm/index.js",

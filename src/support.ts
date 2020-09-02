@@ -8,6 +8,7 @@ import chalk from 'chalk'
 
 const DEFAULT_AUTHOR_REGEX = /\nauthor-mail <(.*)>/g
 
+// TODO filter by only one author email, see only that author percentages
 export async function getFileOwners({
     filePath,
     regex = DEFAULT_AUTHOR_REGEX,
