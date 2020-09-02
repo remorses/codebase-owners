@@ -1,4 +1,6 @@
-
+export * from './print'
+export * from './tree'
+export * from './support'
 // while read f; do \
 // git blame -w -M -C -C --line-porcelain "$f" | \
 // grep -I '^author-mail '; \

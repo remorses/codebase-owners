@@ -1,6 +1,12 @@
 import assert from 'assert'
-import { makeTreeWithInfo, printTree, getGitIgnoreRegexes } from '../src/tree'
-import { getFileOwners, bfs } from '../src/support'
+import {
+    makeTreeWithInfo,
+    printTree,
+    getGitIgnoreRegexes,
+    getFileOwners,
+    bfs,
+} from '../src/'
+
 import directoryTree from 'directory-tree'
 
 it('directoryTree exclude works', () => {
