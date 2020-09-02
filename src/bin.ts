@@ -4,6 +4,7 @@ import { printTree, makeTreeWithInfo } from './'
 
 const argv = yargs
     .option('cwd', { type: 'string', default: process.cwd() })
+    .option('alignLeft', { type: 'boolean' })
     .option('maxDepth', { type: 'number', default: 4, alias: 'd' })
     .option('printOnlyOwner', { type: 'boolean' })
     .option('verbose', { alias: 'v', type: 'boolean' })
@@ -17,6 +18,7 @@ async function main() {
     console.log(
         printTree(tree, {
             maxDepth: argv.maxDepth,
+            alignRight: !argv.alignLeft,
         }),
     )
 }
