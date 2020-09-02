@@ -48,7 +48,6 @@ export async function makeTreeWithInfo(
     cwd,
     { silent = false, exclude = [] } = {},
 ): Promise<MyDirectoryTree> {
-    console.log(exclude)
     const gitignoreExclude = await getGitIgnoreRegexes()
     const tree = directoryTree(cwd, {
         exclude: [
