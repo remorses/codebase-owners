@@ -33,7 +33,7 @@ export type MyDirectoryTree = {
 export async function makeTreeWithInfo(cwd) {
     const gitignoreExclude = await getGitIgnoreRegexes()
     const tree = directoryTree(cwd, {
-        exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO more default excludes from gitignore
+        exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO default excludes from gitignore not working
     })
     const nodes: Array<MyDirectoryTree> = bfs(tree).reverse()
     nodes.forEach((node) => {
