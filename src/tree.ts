@@ -46,11 +46,17 @@ function getTreeLayersLeafFirst(tree: MyDirectoryTree) {
 // first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
 export async function makeTreeWithInfo(
     cwd,
-    { silent = false } = {},
+    { silent = false, exclude = [] } = {},
 ): Promise<MyDirectoryTree> {
+    console.log(exclude)
     const gitignoreExclude = await getGitIgnoreRegexes()
     const tree = directoryTree(cwd, {
-        exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO default excludes from gitignore not working
+        exclude: [
+            /node_modules/,
+            /\.git/,
+            ...gitignoreExclude,
+            ...exclude.map((x) => new RegExp(x)),
+        ], // TODO default excludes from gitignore not working
     })
     const layers = getTreeLayersLeafFirst(tree)
     if (!silent) {

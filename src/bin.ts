@@ -4,6 +4,7 @@ import { printTree, makeTreeWithInfo } from './'
 
 const argv = yargs
     .option('cwd', { type: 'string', default: process.cwd() })
+    .option('exclude', { type: 'string', array: true, alias: 'e' })
     .option('alignLeft', { type: 'boolean' })
     .option('maxDepth', { type: 'number', default: 4, alias: 'd' })
     .option('printOnlyOwner', { type: 'boolean' })
@@ -11,7 +12,10 @@ const argv = yargs
     .help('help').argv
 
 async function main() {
-    const tree = await makeTreeWithInfo(argv.cwd, { silent: true })
+    const tree = await makeTreeWithInfo(argv.cwd, {
+        silent: true,
+        exclude: argv.exclude,
+    })
     if (argv.printOnlyOwner) {
         return console.log(tree.topContributorDetails.author)
     }
