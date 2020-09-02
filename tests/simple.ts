@@ -1,10 +1,19 @@
 import assert from 'assert'
-import { makeTreeWithInfo, printTree } from '../src/tree'
-import { getFileOwners } from '../src/support'
+import { makeTreeWithInfo, printTree, getGitIgnoreRegexes } from '../src/tree'
+import { getFileOwners, bfs } from '../src/support'
+import directoryTree from 'directory-tree'
 
-// it('tree', () => {
-//     console.log(makeTree('.', { exclude: [/node_modules/] }))
-// })
+it('directoryTree exclude works', () => {
+    const tree = directoryTree('.', { exclude: [/^tests$/, /node_modules/] })
+    const nodes = bfs(tree)
+    assert(
+        !nodes.find((x) => {
+            // console.log(x.name)
+            return x.name === 'tests'
+        }),
+    )
+    console.log()
+})
 // it('tree with options.addToLine', () => {
 //     console.log(
 //         makeTree('.', {
@@ -15,6 +24,10 @@ import { getFileOwners } from '../src/support'
 //         }),
 //     )
 // })
+
+it('getGitIgnoreRegexes', async () => {
+    console.log(await getGitIgnoreRegexes())
+})
 it('getFileOwners', async () => {
     console.log(await getFileOwners({ filePath: './package.json' }))
 })

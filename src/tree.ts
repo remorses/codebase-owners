@@ -2,7 +2,10 @@ import fs from 'fs'
 import chalk from 'chalk'
 import nodePath from 'path'
 import { boolean, number } from 'yargs'
-import dirTree, { DirectoryTree } from 'directory-tree'
+import directoryTree, { DirectoryTree } from 'directory-tree'
+import findUp from 'find-up'
+import globToRegex from 'glob-to-regexp'
+import gitignoreToGlobs from 'gitignore-to-glob'
 import { getFileOwners, makeHist, arrayMax, bfs, average } from './support'
 
 export type MyDirectoryTree = {
@@ -15,10 +18,11 @@ export type MyDirectoryTree = {
     topContributorDetails?: { percentage; author }
 }
 
-export function makeTreeWithInfo(cwd) {
+export async function makeTreeWithInfo(cwd) {
     // TODO first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
-    const tree = dirTree(cwd, {
-        exclude: [/node_modules/, /\.git/], // TODO more default excludes from gitignore
+    const gitignoreExclude = await getGitIgnoreRegexes()
+    const tree = directoryTree(cwd, {
+        exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO more default excludes from gitignore
     })
     const nodes: Array<MyDirectoryTree> = bfs(tree).reverse()
     nodes.forEach((node) => {
@@ -63,6 +67,16 @@ export function makeTreeWithInfo(cwd) {
         )
     })
     return tree
+}
+
+export async function getGitIgnoreRegexes() {
+    try {
+        const gitignorePath = await findUp('.gitignore')
+        const globsToIgnore = gitignoreToGlobs(gitignorePath) || []
+        return globsToIgnore.map((x) => globToRegex(x, { globstar: true }))
+    } catch {
+        return []
+    }
 }
 
 const SYMBOLS = {
@@ -113,8 +127,8 @@ function print(
 
     // ADD THE CONTRIBUTOR INFO
     // TODO align to the right
-    const percentage = node.topContributorDetails.percentage ?
-        (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
+    const percentage = node.topContributorDetails.percentage
+        ? (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
         : ''
     line.push(
         ` ${chalk.cyan(percentage)} ${chalk.green(
