@@ -10,7 +10,9 @@ const DEFAULT_AUTHOR_REGEX = /\nauthor-mail <(.*)>/g
 
 export function getFileOwners({ filePath, regex = DEFAULT_AUTHOR_REGEX }) {
     try {
-        let stdout = execSync(`git blame -w --line-porcelain ${filePath}`)
+        let stdout = execSync(`git blame -w --line-porcelain ${filePath}`, {
+            stdio: 'pipe',
+        })
         const data = stdout.toString()
 
         let match
