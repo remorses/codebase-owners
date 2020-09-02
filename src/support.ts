@@ -70,4 +70,22 @@ export function bfs(tree: Tree) {
     return results
 }
 
-export let average = (array) => array.reduce((a, b) => a + b, 0) / array.length
+export let average = (array) => {
+    return array.reduce((a, b) => a + b, 0) / array.length
+}
+
+export let weightedAverage = (array, weights) => {
+    if (weights.length !== array.length) {
+        throw new Error(
+            'weightedAverage got weights with different length from array',
+        )
+    }
+    const weightSum = weights.reduce((a, b) => a + b, 0)
+    const normalizedWeights = weights.map((x) => x / weightSum)
+    // console.log({ normalizedWeights })
+    const weightedArray = array.map((x, i) => x * normalizedWeights[i])
+    return (
+        weightedArray.reduce((a, b) => a + b, 0) /
+        normalizedWeights.reduce((a, b) => a + b, 0)
+    )
+}

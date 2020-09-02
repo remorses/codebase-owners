@@ -5,6 +5,7 @@ import {
     getGitIgnoreRegexes,
     getFileOwners,
     bfs,
+    weightedAverage,
 } from '../src/'
 
 import directoryTree from 'directory-tree'
@@ -33,6 +34,12 @@ it('directoryTree exclude works', () => {
 
 it('getGitIgnoreRegexes', async () => {
     console.log(await getGitIgnoreRegexes())
+})
+it('weightedAverage', async () => {
+    const x = [2, 0]
+    const w = [5, 5]
+    const res = weightedAverage(x, w)
+    console.log(res)
 })
 it('getFileOwners', async () => {
     console.log(await getFileOwners({ filePath: './package.json' }))
