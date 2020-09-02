@@ -1,5 +1,5 @@
 {
-    "name": "code-owners",
+    "name": "codebase-owners",
     "_": "[bump]",
     "version": "1.0.1",
     "description": "Get the owners of a file tree using git blame under the hood",
