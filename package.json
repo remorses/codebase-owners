@@ -2,7 +2,7 @@
     "name": "code-owners",
     "_": "[bump]",
     "version": "0.0.8",
-    "description": "",
+    "description": "Get the owners of a file tree using git blame under the hood",
     "main": "dist/index.js",
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
@@ -10,6 +10,9 @@
         "require": "tests/init.js",
         "spec": "tests/**.ts",
         "timeout": 9999999999
+    },
+    "repository": {
+        "url": "https://github.com/remorses/code-owners"
     },
     "files": [
         "dist",
