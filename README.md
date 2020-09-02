@@ -1,4 +1,4 @@
-# code-owners
+# codebase-owners
 
 Get the owners of a file tree (using git blame under the hood)
 
