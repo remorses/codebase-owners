@@ -53,9 +53,9 @@ export async function makeTreeWithInfo(cwd) {
     console.log(
         `processing ${
             layers.length
-        } tree layers concurrently, with in average ${average(
+        } file tree layers concurrently, with in average ${average(
             layers.map((x) => x.length),
-        )} nodes each`,
+        )} files each`,
     )
     for (let nodes of layers) {
         await Promise.all(
