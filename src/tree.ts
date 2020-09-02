@@ -29,8 +29,8 @@ export type MyDirectoryTree = {
     }
 }
 
+// first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
 export async function makeTreeWithInfo(cwd) {
-    // TODO first create the tree object, do a reversed breadth first search, getting top contributors for every file and adding to a cache with { absPath, linesCount, topContributor, topContributorPercentage }, every directory has percentage as weighted average on its direct children, then print the tree
     const gitignoreExclude = await getGitIgnoreRegexes()
     const tree = directoryTree(cwd, {
         exclude: [/node_modules/, /\.git/, ...gitignoreExclude], // TODO more default excludes from gitignore
@@ -39,7 +39,6 @@ export async function makeTreeWithInfo(cwd) {
     nodes.forEach((node) => {
         const isDir = node.type === 'directory'
         const filePath = node.path
-        // TODO isDir percentage is based on children percentages
         if (isDir && node?.children?.length) {
             const author = arrayMax(
                 node.children || [],
