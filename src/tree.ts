@@ -84,7 +84,7 @@ export async function makeTreeWithInfo(cwd) {
                             .reduce(sum, 0)
                         const percentage = lines / totalLines
                         if (percentage > 1) {
-                            console.error('got a percentage > 1')
+                            console.error('WARNING: got a percentage > 1')
                         }
                         return {
                             author,
