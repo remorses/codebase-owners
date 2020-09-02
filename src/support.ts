@@ -113,3 +113,10 @@ export function alignRight(
     paddingLength = paddingLength < 0 ? 0 : paddingLength
     return Array(paddingLength).fill(' ').join('') + toAdd
 }
+
+export function numInRange(x, range: [number, number], includeMax = true) {
+    var max = range[1],
+        min = range[0],
+        d = max - min
+    return x === max && includeMax ? x : ((x - min) % d) + min
+}

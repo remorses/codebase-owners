@@ -1,6 +1,6 @@
 import { MyDirectoryTree } from './tree'
 import chalk from 'chalk'
-import { alignRight } from './support'
+import { alignRight, numInRange } from './support'
 
 const SYMBOLS = {
     BRANCH: '├── ',
@@ -13,6 +13,15 @@ const SYMBOLS = {
 function isHiddenFile(filename) {
     return filename[0] === '.'
 }
+
+const COLORS = [
+    chalk.blue,
+    chalk.cyan,
+    chalk.green,
+    chalk.magenta,
+    chalk.italic,
+    chalk.greenBright,
+]
 
 function print(
     node: MyDirectoryTree,
@@ -53,11 +62,18 @@ function print(
         return lines
     }
 
+    const author = node.topContributorDetails.author
     const percentage =
         (node.topContributorDetails.percentage * 100).toFixed(0) + '%'
-    const postfix = ` ${chalk.cyan(('   ' + percentage).slice(-4))} ${
-        node.topContributorDetails.author
-    }`
+    let color = options.colors[author]
+    if (!color) {
+        const l = Object.keys(options.colors).length
+        const i = numInRange(l, [0, COLORS.length - 1])
+        // console.log({ i })
+        color = COLORS[i]
+        options.colors[author] = color
+    }
+    const postfix = ` ${color(('   ' + percentage).slice(-4))} ${author}`
     line.push(options.alignRight ? alignRight(line.join(''), postfix) : postfix)
 
     lines.push(line.join(''))
@@ -128,6 +144,7 @@ export type TreeOptions = {
     reverse?: boolean
     trailingSlash?: boolean
     alignRight?: boolean
+    colors?: Record<string, any>
 }
 
 const DEFAULT_OPTIONS: TreeOptions = {
@@ -139,6 +156,7 @@ const DEFAULT_OPTIONS: TreeOptions = {
     maxDepth: Number.POSITIVE_INFINITY,
     reverse: false,
     trailingSlash: false,
+    colors: {},
 }
 
 export function printTree(
