@@ -23,6 +23,6 @@ jobs:
                   version_file: VERSION
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - run: npm publish
+            - run: yarn publish
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
