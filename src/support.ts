@@ -173,7 +173,7 @@ export async function gitDirectoryTree(cwd, options = {}) {
         .map((x) => x.trim())
         .filter(Boolean)
 
-    return arrangeIntoTree(
+    const nodes = arrangeIntoTree(
         paths.map((x) =>
             x
                 .split('/')
@@ -181,9 +181,15 @@ export async function gitDirectoryTree(cwd, options = {}) {
                 .filter(Boolean),
         ),
     )
+    return {
+        name: cwd.split('/').slice(-1)[0],
+        path: cwd,
+        type: 'directory',
+        children: nodes,
+    }
 }
 
-export function arrangeIntoTree(paths: string[][]): MyDirectoryTree {
+export function arrangeIntoTree(paths: string[][]): MyDirectoryTree[] {
     // Adapted from http://brandonclapp.com/arranging-an-array-of-flat-paths-into-a-json-tree-like-structure/
     var tree = []
 
@@ -213,7 +219,7 @@ export function arrangeIntoTree(paths: string[][]): MyDirectoryTree {
         }
     }
 
-    return { children: tree, type: 'directory' }
+    return tree
 
     function findWhere(array, key, value) {
         // Adapted from https://stackoverflow.com/questions/32932994/findwhere-from-underscorejs-to-jquery

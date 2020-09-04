@@ -65,7 +65,12 @@ export async function makeTreeWithInfo(
             ).toFixed(1)} files each`,
         )
     }
+    let i = 0
     for (let nodes of layers) {
+        i++
+        if (!silent) {
+            console.log(`visited layer ${i}`)
+        }
         await Promise.all(
             nodes.map(async (node) => {
                 const isDir = node.type === 'directory'
