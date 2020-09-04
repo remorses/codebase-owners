@@ -1,6 +1,6 @@
 import { MyDirectoryTree } from './tree'
 import chalk from 'chalk'
-import { alignRight, numInRange } from './support'
+import { alignRight, numInRange, meaningfulColor } from './support'
 
 const SYMBOLS = {
     BRANCH: '├── ',
@@ -75,12 +75,11 @@ function print(
     }
 
     line.push(
-        chalk.green(
-            ` ${
+        ' ' +
+            meaningfulColor(
                 node.topContributorDetails.accumulatedLinesCount /
-                node.topContributorDetails.percentage
-            }`,
-        ),
+                    node.topContributorDetails.percentage,
+            ),
     )
 
     const postfix = ` ${color(('   ' + percentage).slice(-4))} ${author}`
@@ -174,5 +173,5 @@ export function printTree(
     options: TreeOptions = {},
 ): string {
     const combinedOptions = Object.assign({}, DEFAULT_OPTIONS, options)
-    return print(node, 0, '', combinedOptions, false, true).join('\n')
+    return print(node, 0, '', combinedOptions, false).join('\n')
 }

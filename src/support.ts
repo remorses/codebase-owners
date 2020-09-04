@@ -129,3 +129,17 @@ export function numInRange(x, range: [number, number], includeMax = true) {
 export function sum(a, b) {
     return a + b
 }
+
+export function meaningfulColor(x: number) {
+    if (x < 100) {
+        return chalk.gray(x)
+    } else if (x < 400) {
+        return chalk.greenBright(x)
+    } else if (x < 1000) {
+        return chalk.yellow(x)
+    } else if (x < 5000) {
+        return chalk.redBright(x)
+    } else {
+        return chalk.red(x)
+    }
+}
