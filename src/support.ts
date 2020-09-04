@@ -138,8 +138,21 @@ export function meaningfulColor(x: number) {
     } else if (x < 1000) {
         return chalk.yellow(x)
     } else if (x < 5000) {
-        return chalk.redBright(x)
+        return chalk.redBright(nFormatter(x))
     } else {
-        return chalk.red(x)
+        return chalk.red(nFormatter(x))
     }
+}
+
+function nFormatter(num) {
+    if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G'
+    }
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'
+    }
+    return num
 }
