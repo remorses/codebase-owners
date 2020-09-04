@@ -73,7 +73,18 @@ function print(
         color = COLORS[i]
         options.colors[author] = color
     }
+
+    line.push(
+        chalk.green(
+            ` ${
+                node.topContributorDetails.accumulatedLinesCount /
+                node.topContributorDetails.percentage
+            }`,
+        ),
+    )
+
     const postfix = ` ${color(('   ' + percentage).slice(-4))} ${author}`
+
     line.push(options.alignRight ? alignRight(line.join(''), postfix) : postfix)
 
     lines.push(line.join(''))
@@ -163,5 +174,5 @@ export function printTree(
     options: TreeOptions = {},
 ): string {
     const combinedOptions = Object.assign({}, DEFAULT_OPTIONS, options)
-    return print(node, 0, '', combinedOptions).join('\n')
+    return print(node, 0, '', combinedOptions, false, true).join('\n')
 }
