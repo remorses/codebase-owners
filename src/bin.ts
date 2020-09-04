@@ -13,7 +13,7 @@ const argv = yargs
 
 async function main() {
     const tree = await makeTreeWithInfo(argv.cwd, {
-        silent: true,
+        silent: argv.printOnlyOwner,
         exclude: argv.exclude,
     })
     if (argv.printOnlyOwner) {

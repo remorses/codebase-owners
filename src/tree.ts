@@ -2,7 +2,6 @@ import fs from 'fs'
 import chalk from 'chalk'
 import nodePath from 'path'
 import { boolean, number, array } from 'yargs'
-import directoryTree, { DirectoryTree } from 'directory-tree'
 import findUp from 'find-up'
 import globToRegex from 'glob-to-regexp'
 import { groupBy } from 'lodash'
@@ -15,16 +14,15 @@ import {
     average,
     weightedAverage,
     sum,
+    gitDirectoryTree,
 } from './support'
 
 export type MyDirectoryTree = {
-    path: string
+    path?: string
     depth?: number
-    name: string
-    size: number
+    name?: string
     type: 'directory' | 'file'
     children?: MyDirectoryTree[]
-    extension?: string
     topContributorDetails?: {
         percentage: number
         author: string
@@ -49,13 +47,13 @@ export async function makeTreeWithInfo(
     { silent = false, exclude = [] } = {},
 ): Promise<MyDirectoryTree> {
     const gitignoreExclude = await getGitIgnoreRegexes()
-    const tree = directoryTree(cwd, {
-        exclude: [
-            /node_modules/,
-            /\.git/,
-            ...gitignoreExclude,
-            ...exclude.map((x) => new RegExp(x)),
-        ], // TODO default excludes from gitignore not working
+    const tree = await gitDirectoryTree(cwd, {
+        // exclude: [
+        //     /node_modules/,
+        //     /\.git/,
+        //     ...gitignoreExclude,
+        //     ...exclude.map((x) => new RegExp(x)),
+        // ], // TODO add excludes
     })
     const layers = getTreeLayersLeafFirst(tree)
     if (!silent) {
@@ -64,7 +62,7 @@ export async function makeTreeWithInfo(
                 layers.length
             } file tree layers concurrently, with in average ${average(
                 layers.map((x) => x.length),
-            )} files each`,
+            ).toFixed(1)} files each`,
         )
     }
     for (let nodes of layers) {
