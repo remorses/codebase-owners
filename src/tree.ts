@@ -72,6 +72,7 @@ export async function makeTreeWithInfo(
     if (!silent) {
         bar.start(layers.map((x) => x.length).reduce(sum, 0), 0)
     }
+    let linesCounted = 0
     for (let nodes of layers) {
         await batchedPromiseAll(
             nodes,
@@ -79,7 +80,8 @@ export async function makeTreeWithInfo(
             CONCURRENT_IO_LIMIT,
         )
         if (!silent) {
-            bar.update(nodes.length)
+            linesCounted += nodes.length
+            bar.update(linesCounted)
         }
     }
     bar.stop()
