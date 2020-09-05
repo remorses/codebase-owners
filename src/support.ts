@@ -163,7 +163,7 @@ function nFormatter(num) {
     return num
 }
 
-export async function gitDirectoryTree(cwd, options = {}) {
+export async function gitDirectoryTree(cwd, options = {}): Promise<MyDirectoryTree> {
     let { stdout } = await exec(`git ls-files ${cwd}`, {
         maxBuffer: 1024 * 10000,
     })

@@ -9,7 +9,8 @@ const argv = yargs
     .option('maxDepth', { type: 'number', default: 4, alias: 'd' })
     .option('printOnlyOwner', { type: 'boolean' })
     .option('verbose', { alias: 'v', type: 'boolean' })
-    .help('help').argv
+    .help('help')
+    .help('h').argv
 
 async function main() {
     const tree = await makeTreeWithInfo(argv.cwd, {
