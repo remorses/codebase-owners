@@ -136,11 +136,11 @@ export function sum(a, b) {
 
 export function meaningfulColor(x: number) {
     if (x < 100) {
-        return chalk.gray(x)
+        return chalk.gray(x.toFixed(0))
     } else if (x < 400) {
-        return chalk.greenBright(x)
+        return chalk.greenBright(x.toFixed(0))
     } else if (x < 1000) {
-        return chalk.yellow(x)
+        return chalk.yellow(x.toFixed(0))
     } else if (x < 5000) {
         return chalk.redBright(nFormatter(x))
     } else {
