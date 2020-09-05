@@ -33,7 +33,7 @@ export type MyDirectoryTree = {
     }
 }
 
-const CONCURRENT_IO_LIMIT = os.cpus().length * 10
+const CONCURRENT_IO_LIMIT = os.cpus().length * 4
 
 function getTreeLayersLeafFirst(tree: MyDirectoryTree) {
     const nodes: Array<MyDirectoryTree> = bfs(tree)
