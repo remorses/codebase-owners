@@ -1,7 +1,7 @@
 {
     "name": "codebase-owners",
     "_": "[bump]",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "Get the owners of a file tree using git blame under the hood",
     "main": "dist/index.js",
     "module": "esm/index.js",
