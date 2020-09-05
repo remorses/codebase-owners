@@ -1,8 +1,6 @@
 const util = require('util')
-import { exec } from 'promisify-child-process'
-import { execSync } from 'child_process'
-import dirTree from 'directory-tree'
 import chalk from 'chalk'
+import { exec } from 'promisify-child-process'
 import { MyDirectoryTree } from './tree'
 
 // export const exec = util.promisify(exec_)
@@ -163,7 +161,10 @@ function nFormatter(num) {
     return num
 }
 
-export async function gitDirectoryTree(cwd, options = {}): Promise<MyDirectoryTree> {
+export async function gitDirectoryTree(
+    cwd,
+    options = {},
+): Promise<MyDirectoryTree> {
     let { stdout } = await exec(`git ls-files ${cwd}`, {
         maxBuffer: 1024 * 10000,
     })

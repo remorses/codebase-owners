@@ -1,6 +1,6 @@
-import { MyDirectoryTree } from './tree'
 import chalk from 'chalk'
-import { alignRight, numInRange, meaningfulColor } from './support'
+import { alignRight, meaningfulColor, numInRange } from './support'
+import { MyDirectoryTree } from './tree'
 
 const SYMBOLS = {
     BRANCH: '├── ',

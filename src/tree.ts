@@ -1,23 +1,18 @@
-import fs from 'fs'
-import chalk from 'chalk'
-import os from 'os'
-import nodePath from 'path'
-import { boolean, number, array } from 'yargs'
+import { batchedPromiseAll } from 'batched-promise-all'
+import cliProgress from 'cli-progress'
 import findUp from 'find-up'
+import gitignoreToGlobs from 'gitignore-to-glob'
 import globToRegex from 'glob-to-regexp'
 import { groupBy } from 'lodash'
-import cliProgress from 'cli-progress'
-import gitignoreToGlobs from 'gitignore-to-glob'
-import { batchedPromiseAll } from 'batched-promise-all'
+import os from 'os'
 import {
-    getFileOwners,
-    makeHist,
     arrayMax,
-    bfs,
     average,
-    weightedAverage,
-    sum,
+    bfs,
+    getFileOwners,
     gitDirectoryTree,
+    makeHist,
+    sum,
 } from './support'
 
 export type MyDirectoryTree = {
