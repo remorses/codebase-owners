@@ -82,7 +82,7 @@ function print(
             ),
     )
 
-    const postfix = ` ${color(('   ' + percentage).slice(-4))} ${author}`
+    const postfix = ` ${color(('   ' + percentage).slice(-4) + ` ${author}`)}`
 
     line.push(options.alignRight ? alignRight(line.join(''), postfix) : postfix)
 
